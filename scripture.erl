@@ -1,12 +1,9 @@
-%% Scripture Memorizer Program
-%% Erlang Implementation
 
 -module(scripture).
 -export([start/0]).
 
 -define(CLEAR, "\e[H\e[2J").
 
-%% Start the program
 start() ->
     Reference = {"Proverbs", 3, 5, 6},
     Text = "Trust in the Lord with all your heart and lean not on your own understanding.",
@@ -14,7 +11,6 @@ start() ->
     HiddenWords = lists:map(fun(W) -> {W, false} end, Words),
     loop(Reference, HiddenWords).
 
-%% Main loop
 loop(Reference, Words) ->
     io:format(?CLEAR),
     display(Reference, Words),
@@ -36,7 +32,6 @@ loop(Reference, Words) ->
             end
     end.
 
-%% Display the scripture
 display({Book, Chapter, StartVerse, EndVerse}, Words) ->
     Reference =
         case EndVerse of
@@ -52,7 +47,6 @@ display({Book, Chapter, StartVerse, EndVerse}, Words) ->
     end, Words),
     io:format("~n").
 
-%% Hide random words
 hide_random_words(Words) ->
     VisibleWords = [W || W = {_, false} <- Words],
     case length(VisibleWords) of
@@ -63,6 +57,5 @@ hide_random_words(Words) ->
             lists:map(fun(W) -> if W =:= {Word, false} -> {Word, true}; true -> W end end, Words)
     end.
 
-%% Check if all words are hidden
 all_hidden(Words) ->
     lists:all(fun({_, Hidden}) -> Hidden end, Words).
